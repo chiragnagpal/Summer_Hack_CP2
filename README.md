@@ -4,7 +4,7 @@ Pairwise Classification: An iPython Notebook that featurises the pairs of user p
 personalinking.py: Function Definitions to Sample and Featurise raw data  
 
 
-~~To Do: Sampling Pseudo True Negatives, Fitting a Classifier,  Active Search~~
+~~To Do: Sampling Pseudo True Negatives, Fitting a Classifier,  Active Search~~  
 To Do: Active Search
 
 
