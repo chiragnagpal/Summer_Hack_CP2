@@ -2,4 +2,7 @@
 
 Pairwise Classification: An iPython Notebook that featurises the pairs of user profiles and posts.
 
-To Do: Sampling Pseudo True Negatives, Fitting a Classifier,  Active Search 
+~~To Do: Sampling Pseudo True Negatives, Fitting a Classifier,  Active Search~~
+To Do: Active Search
+
+
