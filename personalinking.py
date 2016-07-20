@@ -4,6 +4,8 @@
 # In[1]:
 
 def txt_dict(filename):
+     
+    import ujson
     #test loading the file, printing sample contents
     with open(filename,'r') as fp:
         temp = ujson.load(fp);
