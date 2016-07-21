@@ -198,7 +198,7 @@ def gen_neg_pairs(filename, postsA, postsB, usrsA, usrsB):
             
             pos.append((pair['site_a'],pair['site_b']))
             
-    for i in range(4*len(data_gt)):
+    for i in range(len(data_gt)):
         
         
         usr1 = random.choice(usrsA.keys())
@@ -241,7 +241,16 @@ def get_cosine(vec1, vec2):
         return float(numerator) / denominator
 
 
-# In[8]:
+def replace_punct(st):
+    
+    import string
+    import re
+
+    
+    regex = re.compile('[%s]' % re.escape(string.punctuation))
+    out = regex.sub(' ', st)
+    
+    return out
 
 def indi_scores(l1, l2):
     
@@ -254,11 +263,11 @@ def indi_scores(l1, l2):
     
     for item in l1:
         
-        l1_t.append(set(item.lower().split()))
+        l1_t.append(set(replace_punct(item).lower().split()))
     
     for item in l2:
         
-        l2_t.append(set(item.lower().split()))
+        l2_t.append(set(replace_punct(item).lower().split()))
 
     l1 = l1_t
     
@@ -295,6 +304,9 @@ def indi_scores(l1, l2):
 
 # In[9]:
 
+
+
+
 def overall_scores(l1, l2):
     
     
@@ -306,11 +318,11 @@ def overall_scores(l1, l2):
     
     for it in l1:
         
-        item |= set(it.lower().split())
+        item |= set(replace_punct(it).lower().split())
         
     for it in l2:
     
-        item2 |= set(it.lower().split())
+        item2 |= set(replace_punct(it).lower().split())
         
     
     
@@ -331,39 +343,8 @@ def overall_scores(l1, l2):
 
 # In[10]:
 
-def overall_scores(l1, l2):
-    
-    
-    vec = []
-    
-    item = set()
-    
-    item2 = set()
-    
-    for it in l1:
-        
-        item |= set(it.lower().split())
-        
-    for it in l2:
-    
-        item2 |= set(it.lower().split())
-        
-    
-    
-    if len(item|item2) == 0:
-            
-        vec.append(0)
-        
-    else:
-        vec.append(  float(len(item&item2))/float((len(item|item2))) )   
 
-    vec1 = text_to_vector(item)
-    vec2 = text_to_vector(item2)
     
-    vec.append(get_cosine(vec1, vec2))
-        
-    return vec
-
         
 def featurise( usr1, usr2, postsA, postsB, usrsA, usrsB  ):
     
