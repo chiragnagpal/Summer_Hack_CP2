@@ -392,6 +392,22 @@ def featurise( usr1, usr2, postsA, postsB, usrsA, usrsB  ):
     vector.append(int(ft2))
     
     
+    if len(usr1) > len(usr2):
+            
+            norm = len(usr1)
+    
+    else:
+        
+            norm = len(usr2)
+    
+    ft1 = float(ft1)/norm
+
+    ft2 = float(ft2)/norm
+
+    vector.append(ft1)
+
+    vector.append(ft2)
+    
     #feature3 : timediff between user     
     
     ft3 =  abs(usrsA[usr1]['registrationTime'] - usrsB[usr2]['registrationTime'])
