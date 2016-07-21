@@ -81,9 +81,10 @@ def usr_bow(posts):
             posts_bow[post['userName']]['subject'] = [post['postSubject']  ]
             
             posts_bow[post['userName']]['title'] = [post['threadTitle']  ]
-
-
             
+            posts_bow[post['userName']]['postTime'] = [post['postTime']]
+        
+         
         else:
             
             posts_bow[post['userName']]['body'] = posts_bow[post['userName']]['body']  + [post['postBody']]
@@ -92,6 +93,7 @@ def usr_bow(posts):
 
             posts_bow[post['userName']]['title'] = posts_bow[post['userName']]['title'] + [post['threadTitle']  ]
             
+            posts_bow[post['userName']]['postTime'] = posts_bow[post['userName']]['postTime'] + [post['postTime']]
             
     return posts_bow
 
@@ -340,9 +342,51 @@ def overall_scores(l1, l2):
         
     return vec
 
+def post_freq(time):
+    
+    mn = min(time)
+    
+    mx = max(time)
+    
+    return float(mx-mn)/len(time)
 
-# In[10]:
+def post_std(time):
+    
+    import numpy as np
+    
+    return np.std(time)
 
+def post_mn(time):
+    
+    import numpy as np
+    
+    return np.mean(time)
+
+def post_time(usr1, usr2, postsA, postsB, usrsA, usrsB):
+    
+    vector = []
+    
+    time1 = []
+    
+    time2 = []
+    
+    for post in postsA[usr1]['postTime']:
+        
+        time1.append(int(post))
+        
+    for post in postsB[usr2]['postTime']:
+        
+        time2.append(int(post))
+        
+    vector.append( abs(post_std(time1) - post_std(time2 ) ) )
+                      
+    vector.append(abs(post_freq(time1) - post_freq(time2) ))
+                  
+    vector.append(abs( post_mn(time1) - post_mn(time2)  )) 
+                  
+    return vector
+    
+    
 
     
         
@@ -429,14 +473,19 @@ def featurise( usr1, usr2, postsA, postsB, usrsA, usrsB  ):
         ft6 = ft6 + overall_scores(postsA[usr1]['subject'],postsB[usr2]['subject'])
 
         ft6 = ft6 + overall_scores(postsA[usr1]['title'],postsB[usr2]['title'])
+                 
 
         vector += ft6 
                 
+        vector += post_time( usr1, usr2, postsA, postsB, usrsA, usrsB )         
+                  
     else:
         
         vector += [-1 for i in range(18)]
         
         vector +=[-1 for i in range(6)]
+                  
+        vector +=[-1 for i in range(3)]
     
     #feature7: Group Affliations
     
@@ -490,6 +539,9 @@ def featurise( usr1, usr2, postsA, postsB, usrsA, usrsB  ):
     vector.append(ft8)
     
     vector.append(ft9)
+    
+    
+    
         
     return vector
 
