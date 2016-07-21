@@ -440,9 +440,9 @@ def featurise( usr1, usr2, postsA, postsB, usrsA, usrsB  ):
     
     #feature7: Group Affliations
     
-    groups1 = usrsA[usr1]
+    groups1 = usrsA[usr1]['groupName']
     
-    groups2 = usrsB[usr2]
+    groups2 = usrsB[usr2]['groupName']
     
     n = 0
     
@@ -458,10 +458,40 @@ def featurise( usr1, usr2, postsA, postsB, usrsA, usrsB  ):
     
     vector.append(ft7)
 
+    
+    #feature8: Signatures
+    
+    sig1 = usrsA[usr1].get("Signature", None)
+    
+    sig2 = usrsB[usr2].get("Signature", None)
+    
+    ft8 = -1
+    
+    ft9 = -1
+    
+    if (sig1!=None) and (sig2!=None):
+        
+        sig1 = replace_punct(sig1).lower().split()
+        
+        sig2 = replace_punct(sig2).lower().split()
+        
+        ssig1 = set(sig1)
+        
+        ssig2 = set(sig2)
+        
+        ft8 = float(len(ssig1&ssig2))/float((len(ssig1|ssig2)))
+        
+        sig1 = text_to_vector(sig1)
+
+        sig2 = text_to_vector(sig2)
+        
+        ft9 = get_cosine(sig1, sig2)
+    
+    vector.append(ft8)
+    
+    vector.append(ft9)
+        
     return vector
-    
-    
-    
 
 
 # In[ ]:
